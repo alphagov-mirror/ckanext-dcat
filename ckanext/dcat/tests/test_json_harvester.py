@@ -1,5 +1,5 @@
 import httpretty
-from mock import call, patch
+from mock import call, patch, Mock
 
 import nose
 
@@ -19,6 +19,7 @@ class TestDCATJSONHarvestFunctional(FunctionalHarvestTest):
     json_content_invalid_tags = '''
         {
         "@type": "dcat:Dataset",
+        "name": "Invalid tags",
         "identifier": "http://example.com/datasets/invalid_example",
         "title": "Example dataset with invalid tags",
         "description": "Invalid keywords",
@@ -320,5 +321,5 @@ class TestImportStage:
 
         args, _ = mock_save_object_error.call_args_list[0]
 
-        assert 'Validation Error:' in args[0]
+        assert 'Error importing dataset Invalid tags: ValidationError(None,)' in args[0]
         assert '{\'tags\': [{}, u\'Tag "test\\\'s" must be alphanumeric characters or symbols: -_.\', u\'Tag "invalid & wrong" must be alphanumeric characters or symbols: -_.\']}' in args[0]
